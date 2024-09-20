@@ -13,6 +13,7 @@ export const updateUser = createAsyncThunk('user/update', updateUserApi);
 export const register = createAsyncThunk('user/register', registerUserApi);
 export const login = createAsyncThunk('user/login', loginUserApi);
 export const logout = createAsyncThunk('user/logout', logoutApi);
+
 export interface TUserState {
   isAuthChecked: boolean;
   user: TUser;

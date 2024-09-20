@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Navigate, useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from '../../services/store';
 import { isAuthCheckedSelector } from '../../services/slices/user';
 
 type ProtectedRouteProps = {
@@ -14,9 +14,11 @@ export const ProtectedRoute = ({
 }: ProtectedRouteProps) => {
   const isAuthChecked = useSelector(isAuthCheckedSelector);
   const location = useLocation();
+
   if (!onlyOnAuth && !isAuthChecked) {
     return <Navigate replace to='/login' state={{ from: location }} />;
   }
+
   if (onlyOnAuth && isAuthChecked) {
     const fromPage = location.state?.from || { pathname: '/' };
     return <Navigate replace to={fromPage} />;

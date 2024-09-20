@@ -1,13 +1,14 @@
 import { FC, memo } from 'react';
 import { BurgerConstructorElementUI } from '@ui';
 import { BurgerConstructorElementProps } from './type';
-import { useDispatch, useSelector } from 'react-redux';
-import { TConstructorIngredient } from '@utils-types';
+import { useSelector, useDispatch } from '../../services/store';
 import {
+  clearAll,
   constructorSelector,
-  updateAll,
-  deleteItem
+  deleteItem,
+  updateAll
 } from '../../services/slices/constructor';
+import { TConstructorIngredient, TIngredient } from '@utils-types';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
   ({ ingredient, index, totalItems }) => {

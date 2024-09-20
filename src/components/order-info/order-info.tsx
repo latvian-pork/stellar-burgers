@@ -1,11 +1,10 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getOrderByNumberApi } from '@api';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
-import { useParams } from 'react-router';
-import { useSelector } from 'react-redux';
-import { getOrderByNumberApi } from '@api';
-import { data } from '@remix-run/router/dist/utils';
+import { useDispatch, useSelector } from '../../services/store';
 import { getIngredients } from '../../services/slices/ingredients';
 
 export const OrderInfo: FC = () => {
