@@ -4,7 +4,7 @@ import {
   getUserApi,
   updateUserApi,
   logoutApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 
@@ -20,7 +20,7 @@ export interface TUserState {
   error: string | undefined;
 }
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   isAuthChecked: false,
   user: {
     email: '',
