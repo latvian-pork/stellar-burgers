@@ -1,10 +1,12 @@
-const testUrl = 'http://localhost:4000';
+const modalSelector = '#modals';
+const bodySelector = 'body';
+const overlaySelector = '#overlay';
 
 describe('main page and modals test', () => {
   beforeEach(() => {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
     cy.intercept('GET', 'api/auth/user', { fixture: 'user.json' });
-    cy.visit(testUrl);
+    cy.visit('/');
   });
 
   afterEach(() => {
@@ -38,31 +40,31 @@ describe('main page and modals test', () => {
   });
 
   it('modal:closed test', () => {
-    cy.get('#modals').children().should('have.length', 0);
+    cy.get(modalSelector).children().should('have.length', 0);
   });
 
   it('modal:open test', () => {
     cy.contains('Соус фирменный Space Sauce').click();
-    cy.get('#modals').children().should('have.length', 2);
-    cy.get('#modals').contains('Соус фирменный Space Sauce');
+    cy.get(modalSelector).children().should('have.length', 2);
+    cy.get(modalSelector).contains('Соус фирменный Space Sauce');
   });
 
   it('modal: button close', () => {
     cy.contains('Соус фирменный Space Sauce').click();
-    cy.get('#modals').find('button').click();
-    cy.get('#modals').children().should('have.length', 0);
+    cy.get(modalSelector).find('button').click();
+    cy.get(modalSelector).children().should('have.length', 0);
   });
 
   it('modal: esc button close test', () => {
     cy.contains('Соус фирменный Space Sauce').click();
-    cy.get('body').type('{esc}');
-    cy.get('#modals').children().should('have.length', 0);
+    cy.get(bodySelector).type('{esc}');
+    cy.get(modalSelector).children().should('have.length', 0);
   });
 
   it('modal: overlay click close test', () => {
     cy.contains('Соус фирменный Space Sauce').click();
-    cy.get('#overlay').click({ force: true });
-    cy.get('#modals').children().should('have.length', 0);
+    cy.get(overlaySelector).click({ force: true });
+    cy.get(modalSelector).children().should('have.length', 0);
   });
 });
 
@@ -72,7 +74,7 @@ describe('order tests', () => {
     cy.intercept('POST', '/api/auth/login', { fixture: 'user.json' });
     cy.intercept('GET', '/api/auth/user', { fixture: 'user.json' });
     cy.intercept('POST', '/api/orders', { fixture: 'order.json' });
-    cy.visit(testUrl);
+    cy.visit('/');
     cy.setCookie('accessToken', 'accessToken');
     window.localStorage.setItem('refreshToken', 'refreshToken');
   });
@@ -92,10 +94,11 @@ describe('order tests', () => {
     cy.get('@sauces').contains('Добавить').click();
 
     cy.contains('Оформить заказ').click();
-    cy.get('#modals').children().should('have.length', 2);
-    cy.get('#modals').find('h2').contains(41975);
-    cy.get('body').type('{esc}');
-    cy.get('#modals').children().should('have.length', 0);
+    cy.intercept('POST', '/api/orders', { fixture: 'order.json' });
+    cy.get(modalSelector).children().should('have.length', 2);
+    cy.get(modalSelector).find('h2').contains(41975);
+    cy.get(bodySelector).type('{esc}');
+    cy.get(modalSelector).children().should('have.length', 0);
 
     cy.get('.text_type_main-default').contains('Выберите булки');
     cy.get('.text_type_main-default').contains('Выберите начинку');
